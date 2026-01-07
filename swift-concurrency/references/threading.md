@@ -16,6 +16,8 @@ System-level resource that runs instructions. High overhead for creation and swi
 
 > **Course Deep Dive**: This topic is covered in detail in [Lesson 7.1: How Threads relate to Tasks](https://www.swiftconcurrencycourse.com?utm_source=github&utm_medium=agent-skill&utm_campaign=lesson-reference)
 
+**Important (Swift 6+)**: Avoid using `Thread.current` inside async contexts. In Swift 6 language mode, `Thread.current` is unavailable from asynchronous contexts and will fail to compile. Prefer reasoning in terms of isolation domains; use Instruments and the debugger to observe execution when needed.
+
 ## Cooperative Thread Pool
 
 Swift creates only as many threads as CPU cores. Tasks share these threads efficiently.
@@ -261,10 +263,10 @@ Prevent sending non-Sendable values across isolation:
 ```swift
 nonisolated(nonsending) func storeTouch(...) async {
     // Runs on caller's isolation, no value sending
-
-> **Course Deep Dive**: This topic is covered in detail in [Lesson 7.4: Dispatching to different threads using nonisolated(nonsending) and @concurrent (Updated for Swift 6.2)](https://www.swiftconcurrencycourse.com?utm_source=github&utm_medium=agent-skill&utm_campaign=lesson-reference)
 }
 ```
+
+> **Course Deep Dive**: This topic is covered in detail in [Lesson 7.4: Dispatching to different threads using nonisolated(nonsending) and @concurrent (Updated for Swift 6.2)](https://www.swiftconcurrencycourse.com?utm_source=github&utm_medium=agent-skill&utm_campaign=lesson-reference)
 
 **Use when**: Method doesn't need to switch isolation, avoiding Sendable requirements.
 
